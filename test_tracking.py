@@ -16,9 +16,26 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        #Right hand landmarks
+        # Draw bounding box around the detected hand
+        if results.right_hand_landmarks:
+            # Extract the bounding box coordinates
+            x_min, y_min, x_max, y_max = 9999, 9999, 0, 0
+            for landmark in results.right_hand_landmarks.landmark:
+                x, y = int(landmark.x * image.shape[1]), int(landmark.y * image.shape[0])
+                if x < x_min:
+                    x_min = x
+                if x > x_max:
+                    x_max = x
+                if y < y_min:
+                    y_min = y
+                if y > y_max:
+                    y_max = y
+            # Draw the bounding box
+            cv2.rectangle(image, (x_min - 50, y_min - 50), (x_max + 50, y_max + 50), (0, 0, 0), 4)
+
+        # Draw hand landmarks and connections
         mp_draw.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS,
-                               mp_draw.DrawingSpec(color=(0, 0, 200), thickness=4, circle_radius=4), 
+                               mp_draw.DrawingSpec(color=(0, 0, 200), thickness=4, circle_radius=4),
                                mp_draw.DrawingSpec(color=(0, 0, 0), thickness=6, circle_radius=4)
                               )
 
