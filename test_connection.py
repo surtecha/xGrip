@@ -1,7 +1,7 @@
 from pyfirmata import Arduino, util
 import time
 
-board = Arduino('/dev/cu.usbmodem21401')    # Change the port to the one you are using
+board = Arduino('/dev/cu.usbmodem21301')    # Change the port to the one you are using
 
 print(board.get_firmata_version())
 
